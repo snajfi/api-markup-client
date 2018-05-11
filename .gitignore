@@ -1,0 +1,3 @@
+#removing idea files
+.idea/
+*.iml
