@@ -16,7 +16,7 @@ import static org.junit.Assert.fail;
  *  Tests for {@link ClassesOperation} class.
  *  @author Filip Snajdr, fsnajdr86(at)gmail.com
  */
-public class ClassesOperationTests {
+public class ClassesOperationTest {
 
     private ClassesOperation classesOperation = new ClassesOperation();
 
