@@ -24,9 +24,14 @@ public class ClassesOperationTest {
     public void getClassesTestOfValidCall() {
         try {
             List<Class> classes = new ArrayList<>();
-            classesOperation.getClasses(TestClass.class.getPackage().getName()).forEach(classes::add);
 
+            classesOperation.getClasses(TestClass.class.getPackage().getName()).forEach(classes::add);
             assertTrue(classes.size()==1);
+
+            classes.clear();
+            classesOperation.getClasses("somethingWhatDoNotExist").forEach(classes::add);
+            assertTrue(classes.isEmpty());
+
         } catch (ClassNotFoundException | IOException | URISyntaxException e) {
             fail();
         }

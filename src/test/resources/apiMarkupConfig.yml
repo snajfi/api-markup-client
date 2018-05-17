@@ -1,1 +1,2 @@
+map_http_method: [get,post]
 output: xml
