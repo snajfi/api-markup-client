@@ -1,2 +1,2 @@
-map_http_method: [get,post]
-output: xml
+httpMethods: [get]
+apiPackage: package.with.api

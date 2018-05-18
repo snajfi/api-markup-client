@@ -3,6 +3,9 @@ package cz.api.markup.client.tests.unit;
 import cz.api.markup.client.configuration.ConfigReader;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  *  Tests for {@link ConfigReader} class.
@@ -13,8 +16,11 @@ public class ConfigReaderTest {
 
     @Test
     public void readConfigurationTestOfDefaultConfiguration(){
-        ConfigReader.CONFIG.get("map_http_method");
-        ConfigReader.CONFIG.get("output");
+
+        assertEquals("package.with.api",ConfigReader.INSTANCE.configuration().getApiPackage());
+        assertTrue(ConfigReader.INSTANCE.configuration().getHttpMethods().size()==1);
+        assertEquals("get",ConfigReader.INSTANCE.configuration().getHttpMethods().get(0));
+
     }
 
 
