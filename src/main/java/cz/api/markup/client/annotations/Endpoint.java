@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Api {
+public @interface Endpoint {
 
     /**
      * Field for description of provided functionality.

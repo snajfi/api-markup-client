@@ -9,17 +9,21 @@ import cz.api.markup.client.utils.ErrorCode;
  *
  *  @author Filip Snajdr, fsnajdr86(at)gmail.com
  */
-public abstract class ApiMarkupClientException extends Exception{
+abstract class ApiMarkupClientException extends Exception{
 
-    public ApiMarkupClientException(ErrorCode errorCode) {
+    ApiMarkupClientException(ErrorCode errorCode) {
         super(errorCode.getErrorMessage());
     }
 
-    public ApiMarkupClientException(String message) {
+    ApiMarkupClientException(String message) {
         super(message);
     }
 
-    public ApiMarkupClientException(String message, Throwable cause) {
+    ApiMarkupClientException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    ApiMarkupClientException(ErrorCode errorCode, Throwable cause) {
+        super(errorCode.getErrorMessage(), cause);
     }
 }

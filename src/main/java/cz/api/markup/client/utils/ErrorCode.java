@@ -6,7 +6,9 @@ package cz.api.markup.client.utils;
  *  @author Filip Snajdr, fsnajdr86(at)gmail.com
  */
 public enum ErrorCode {
-    CONFIG_FILE_NOT_FOUND("0001","Configuration file was not found.");
+    CONFIG_FILE_NOT_FOUND("0001","Configuration file was not found."),
+    CAN_NOT_SCAN_PACKAGE("0002","Can not scan given package for classes."),
+    NO_CLASSES_IN_PACKAGE("0003","No classes were found in given package.");
 
     private String code;
     private String message;

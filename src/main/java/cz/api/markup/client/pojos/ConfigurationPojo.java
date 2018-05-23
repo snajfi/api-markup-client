@@ -3,7 +3,9 @@ package cz.api.markup.client.pojos;
 import java.util.List;
 
 /**
- * Created by snajfi1 on 18.05.2018.
+ *  Pojo object, which exist to hold configuration.
+ *
+ *  @author Filip Snajdr, fsnajdr86(at)gmail.com
  */
 public class ConfigurationPojo {
 

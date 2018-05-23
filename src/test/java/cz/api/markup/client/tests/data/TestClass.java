@@ -1,7 +1,7 @@
 package cz.api.markup.client.tests.data;
 
 
-import cz.api.markup.client.annotations.Api;
+import cz.api.markup.client.annotations.Endpoint;
 import cz.api.markup.client.annotations.Optional;
 import cz.api.markup.client.annotations.Required;
 
@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
  */
 public final class TestClass {
 
-    @Api(description = "Testing endpoint used as object for automated testing.")
+    @Endpoint(description = "Testing endpoint used as object for automated testing.")
     @GET
     public Response testEndpoint(@Required @QueryParam("requiredParam") String requiredParam,
                                  @Optional @QueryParam("optionalParam") String optionalParam) {
