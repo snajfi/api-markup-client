@@ -8,7 +8,7 @@ import javax.ejb.Stateless;
  *  @author Filip Snajdr, fsnajdr86(at)gmail.com
  */
 @Stateless
-public class CheckUtilsService {
+public class UtilsService {
 
     public Boolean isEmpty(String string) {
         return string==null || string.isEmpty();
@@ -17,4 +17,10 @@ public class CheckUtilsService {
     public Boolean isNotEmpty(String string) {
         return !isEmpty(string);
     }
+
+    public String simpleClassName(Class clazz) {
+        String[] packageName = clazz.getName().split("\\.");
+        return packageName[packageName.length - 1];
+    }
+
 }

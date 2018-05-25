@@ -17,7 +17,8 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
- *  TODO: Write documentation.
+ *  Service which load and hold {@link ApiPojo}.
+ *  All information are loaded after startup and based on configuration.
  *
  *  @author Filip Snajdr, fsnajdr86(at)gmail.com
  */
@@ -25,14 +26,18 @@ import java.util.List;
 @Startup
 public class ApiService {
 
-    @Inject private CheckUtilsService checker;
+    @Inject private UtilsService utils;
     @Inject private ClassesOperationService classesOperation;
 
     private ApiPojo apiPojo = new ApiPojo();
 
+
+    public ApiPojo getApiPojo() {
+        return apiPojo;
+    }
+
     /**
      * Method is triggered after construction of this singleton object on start up of application.
-     *
      *
      * @throws CanNotGetClassesException
      * @throws NoClassesFoundInGivenPackageException
@@ -44,7 +49,7 @@ public class ApiService {
       List<String> httpMethods = ConfigReader.INSTANCE.configuration().getHttpMethods();
       List<Class<? extends Annotation>> annotations = EndpointAnnotations.getAnnotationsForMethods(httpMethods);
 
-      if (checker.isNotEmpty(packageWithApi) ) {
+      if (utils.isNotEmpty(packageWithApi) ) {
 
           List<Class> classes = classesOperation.getClasses(packageWithApi);
           if (!classes.isEmpty()) {
@@ -56,15 +61,28 @@ public class ApiService {
 
       }
 
-
-
     }
 
 
     private void createApiPojoForEndpoints(List<Method> endpoints) {
 
+        Annotation[] methodAnnotations;
+        Annotation[][] paramAnnotations;
+        for (Method endpoint: endpoints) {
+             methodAnnotations = endpoint.getDeclaredAnnotations();
+             paramAnnotations = endpoint.getParameterAnnotations();
+
+             Class<? extends Annotation> httpMethodClass = classesOperation.getEndpointAnnotationClassOnMethod(endpoint);
+
+             //TODO: check null and continue with implementation
+             String methodName = utils.simpleClassName(httpMethodClass);
+
+        }
+
+
 
 
     }
+
 
 }

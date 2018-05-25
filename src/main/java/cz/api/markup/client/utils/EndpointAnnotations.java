@@ -6,11 +6,12 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * TODO: Write documentation.
+ * Enum used for transforming http methods from configuration into {@link Annotation} classes.
  *
  * @author Filip Snajdr, fsnajdr86(at)gmail.com
  */
@@ -27,17 +28,17 @@ public enum EndpointAnnotations {
     }
 
     public static List<Class<? extends Annotation>> getAnnotationsForMethods(List<String> httpMethods) {
-
         List<Class<? extends Annotation>> classes = new ArrayList<>();
-
         for (String method : httpMethods) {
-            if (ANNOTATIONS.containsKey(method)) {
+            if (ANNOTATIONS.containsKey(method.toLowerCase())) {
                 classes.add(ANNOTATIONS.get(method.toLowerCase()));
             }
         }
-
         return classes;
+    }
 
+    public static List<Class<? extends Annotation>> getAllAnnotationClasses() {
+        return new ArrayList<>(ANNOTATIONS.values());
     }
 
 }

@@ -1,6 +1,7 @@
 package cz.api.markup.client.services;
 
 import cz.api.markup.client.exceptions.CanNotGetClassesException;
+import cz.api.markup.client.utils.EndpointAnnotations;
 import cz.api.markup.client.utils.ErrorCode;
 
 import javax.ejb.Stateless;
@@ -122,6 +123,24 @@ public class ClassesOperationService {
             }
         }
         return classes;
+    }
+
+    /**
+     * Scan all annotations on given method and check if some of them
+     * is from {@link cz.api.markup.client.utils.EndpointAnnotations}.
+     *
+     * @param method which should be scanned.
+     * @return endpoint annotation
+     */
+    public Class<? extends Annotation> getEndpointAnnotationClassOnMethod(Method method) {
+        Annotation[] methodAnnotations = method.getDeclaredAnnotations();
+        List<Class<? extends Annotation>> endpointClasses = EndpointAnnotations.getAllAnnotationClasses();
+        for (Annotation annotation: methodAnnotations) {
+            if (endpointClasses.contains(annotation.getClass())) {
+                return annotation.getClass();
+            }
+        }
+        return null;
     }
 
 }
