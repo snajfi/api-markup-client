@@ -28,8 +28,8 @@ public class UtilsService {
         if (annotation!=null) {
             String stringRepresentation = annotation.toString();
             if (stringRepresentation.contains(attribute)) {
-                return stringRepresentation.substring(stringRepresentation.indexOf("=",
-                        stringRepresentation.indexOf(attribute))+1,stringRepresentation.indexOf(")"));
+                return stringRepresentation.substring(stringRepresentation.indexOf('=',
+                        stringRepresentation.indexOf(attribute))+1,stringRepresentation.indexOf(')'));
             }
         }
         return "";

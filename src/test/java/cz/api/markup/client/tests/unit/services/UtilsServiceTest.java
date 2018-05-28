@@ -4,6 +4,9 @@ import cz.api.markup.client.services.UtilsService;
 import cz.api.markup.client.tests.data.TestClass;
 import org.junit.Test;
 
+import javax.ws.rs.GET;
+import java.lang.annotation.Annotation;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -12,7 +15,7 @@ import static org.junit.Assert.assertTrue;
  *  Tests for {@link UtilsService} class.
  *  @author Filip Snajdr, fsnajdr86(at)gmail.com
  */
-public class CheckUtilitiesServiceTest {
+public class UtilsServiceTest {
 
     private UtilsService checkService = new UtilsService();
 
@@ -39,6 +42,12 @@ public class CheckUtilitiesServiceTest {
     @Test
     public void simpleClassNameTest() {
         assertEquals("TestClass",checkService.simpleClassName(TestClass.class));
+    }
+
+    @Test
+    public void extractValueTest() {
+        Annotation annotation =this.getClass().getAnnotation(GET.class);
+        assertTrue(checkService.extractValue(annotation,"something which do not exist").isEmpty());
     }
 
 }
