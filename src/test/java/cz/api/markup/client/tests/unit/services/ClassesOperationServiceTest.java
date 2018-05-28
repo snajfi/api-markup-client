@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import javax.ws.rs.GET;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,11 +24,13 @@ public class ClassesOperationServiceTest {
 
     private ClassesOperationService classesOperation = new ClassesOperationService();
 
+    private Class testClass = TestClass.class;
+
     @Test
     public void getClassesTestOfValidCall() {
         try {
 
-            List<Class> classes = new ArrayList<>(classesOperation.getClasses(TestClass.class.getPackage().getName()));
+            List<Class> classes = new ArrayList<>(classesOperation.getClasses(testClass.getPackage().getName()));
             assertTrue(classes.size()==1);
 
             classes.clear();
@@ -39,13 +42,27 @@ public class ClassesOperationServiceTest {
         }
     }
 
+
+
     @Test
     public void extractMethodsContainsOneOfAnnotationsTest() {
 
-        Class testClass = TestClass.class;
         List<Class> testClasses = Collections.singletonList(testClass);
 
         assertTrue(!classesOperation.getMethodsWithAnnotation(testClasses, Collections.singletonList(GET.class)).isEmpty());
+
+    }
+
+    @Test
+    public void getEndpointAnnotationClassOnMethodTest() {
+
+        Class get = GET.class;
+
+        List<Class> testClasses = Collections.singletonList(testClass);
+        Method method = classesOperation.getMethodsWithAnnotation(testClasses,Collections.singletonList(GET.class)).get(0);
+
+        assertEquals(get,classesOperation.getEndpointAnnotationClassOnMethod(method));
+
 
     }
 

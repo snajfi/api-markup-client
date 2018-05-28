@@ -1,38 +1,43 @@
 package cz.api.markup.client.services;
 
 
+import cz.api.markup.client.annotations.Endpoint;
 import cz.api.markup.client.configuration.ConfigReader;
 import cz.api.markup.client.exceptions.CanNotGetClassesException;
 import cz.api.markup.client.exceptions.NoClassesFoundInGivenPackageException;
 import cz.api.markup.client.pojos.api.ApiPojo;
+import cz.api.markup.client.pojos.api.EndpointPojo;
 import cz.api.markup.client.utils.EndpointAnnotations;
 import cz.api.markup.client.utils.ErrorCode;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Singleton;
-import javax.ejb.Startup;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
 
 /**
  *  Service which load and hold {@link ApiPojo}.
- *  All information are loaded after startup and based on configuration.
+ *
  *
  *  @author Filip Snajdr, fsnajdr86(at)gmail.com
  */
-@Singleton
-@Startup
+@ApplicationScoped
 public class ApiService {
 
     @Inject private UtilsService utils;
     @Inject private ClassesOperationService classesOperation;
 
-    private ApiPojo apiPojo = new ApiPojo();
+    private ApiPojo apiPojo;
 
 
-    public ApiPojo getApiPojo() {
+    public ApiPojo getApiPojo() throws NoClassesFoundInGivenPackageException, CanNotGetClassesException {
+        if (apiPojo==null) {
+            apiPojo = new ApiPojo();
+            scanApi();
+        }
         return apiPojo;
     }
 
@@ -42,7 +47,6 @@ public class ApiService {
      * @throws CanNotGetClassesException
      * @throws NoClassesFoundInGivenPackageException
      */
-    @PostConstruct
     private void scanApi() throws CanNotGetClassesException, NoClassesFoundInGivenPackageException {
 
       String packageWithApi = ConfigReader.INSTANCE.configuration().getApiPackage();
@@ -58,7 +62,6 @@ public class ApiService {
           } else {
               throw new NoClassesFoundInGivenPackageException(ErrorCode.NO_CLASSES_IN_PACKAGE);
           }
-
       }
 
     }
@@ -66,23 +69,34 @@ public class ApiService {
 
     private void createApiPojoForEndpoints(List<Method> endpoints) {
 
-        Annotation[] methodAnnotations;
-        Annotation[][] paramAnnotations;
-        for (Method endpoint: endpoints) {
-             methodAnnotations = endpoint.getDeclaredAnnotations();
-             paramAnnotations = endpoint.getParameterAnnotations();
+        for (Method endpointMethod: endpoints) {
+            Class<? extends Annotation> httpMethodClass = classesOperation.getEndpointAnnotationClassOnMethod(endpointMethod);
+            EndpointPojo endpointPojo;
+            if(httpMethodClass != null) {
+                endpointPojo = new EndpointPojo();
+                endpointPojo.setHttpMethod(utils.simpleClassName(httpMethodClass));
+                endpointPojo.setMethodName(endpointMethod.getName());
 
-             Class<? extends Annotation> httpMethodClass = classesOperation.getEndpointAnnotationClassOnMethod(endpoint);
+                if (endpointMethod.isAnnotationPresent(Endpoint.class)) {
+                    endpointPojo.setDescription(endpointMethod.getAnnotation(Endpoint.class).description());
+                }
 
-             //TODO: check null and continue with implementation
-             String methodName = utils.simpleClassName(httpMethodClass);
+                Class endpointClass = endpointMethod.getDeclaringClass();
+                if (endpointClass.isAnnotationPresent(Path.class)) {
+                    endpointPojo.setPath(utils.extractValue(endpointClass.getAnnotation(Path.class),"value"));
+                }
+
+                if(endpointMethod.isAnnotationPresent(Produces.class)) {
+                    endpointPojo.setProduceType(endpointMethod.getAnnotation(Produces.class).value());
+                }
+
+                //TODO: Scan of endpoint parameters implementation missing.
+
+                apiPojo.addEndpoint(endpointPojo);
+            }
 
         }
 
-
-
-
     }
-
 
 }

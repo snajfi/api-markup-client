@@ -1,2 +1,2 @@
 httpMethods: [get]
-apiPackage: package.with.api
+apiPackage: cz.api.markup.client.tests.data

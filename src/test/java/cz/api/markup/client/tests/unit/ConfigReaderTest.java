@@ -17,7 +17,7 @@ public class ConfigReaderTest {
     @Test
     public void readConfigurationTestOfDefaultConfiguration(){
 
-        assertEquals("package.with.api",ConfigReader.INSTANCE.configuration().getApiPackage());
+        assertEquals("cz.api.markup.client.tests.data",ConfigReader.INSTANCE.configuration().getApiPackage());
         assertTrue(ConfigReader.INSTANCE.configuration().getHttpMethods().size()==1);
         assertEquals("get",ConfigReader.INSTANCE.configuration().getHttpMethods().get(0));
 

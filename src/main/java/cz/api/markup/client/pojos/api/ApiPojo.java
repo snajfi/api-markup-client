@@ -1,6 +1,7 @@
 package cz.api.markup.client.pojos.api;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,14 +15,17 @@ import java.util.List;
 public class ApiPojo {
 
     @XmlElement(name = "endpoint")
-    private List<ParameterPojo> endPoints;
+    private List<EndpointPojo> endPoints = new ArrayList<>();
 
+    public void addEndpoint(EndpointPojo endpointPojo) {
+        endPoints.add(endpointPojo);
+    }
 
-    public List<ParameterPojo> getEndPoints() {
+    public List<EndpointPojo> getEndPoints() {
         return endPoints;
     }
 
-    public void setEndPoints(List<ParameterPojo> endPoints) {
+    public void setEndPoints(List<EndpointPojo> endPoints) {
         this.endPoints = endPoints;
     }
 }

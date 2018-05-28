@@ -127,17 +127,15 @@ public class ClassesOperationService {
 
     /**
      * Scan all annotations on given method and check if some of them
-     * is from {@link cz.api.markup.client.utils.EndpointAnnotations}.
+     * is from {@link EndpointAnnotations}.
      *
      * @param method which should be scanned.
-     * @return endpoint annotation
+     * @return endpoint annotation or null, when no endpoint annotation was found
      */
     public Class<? extends Annotation> getEndpointAnnotationClassOnMethod(Method method) {
-        Annotation[] methodAnnotations = method.getDeclaredAnnotations();
-        List<Class<? extends Annotation>> endpointClasses = EndpointAnnotations.getAllAnnotationClasses();
-        for (Annotation annotation: methodAnnotations) {
-            if (endpointClasses.contains(annotation.getClass())) {
-                return annotation.getClass();
+        for (Class<? extends Annotation> clazz: EndpointAnnotations.getAllAnnotationClasses()) {
+            if (method.isAnnotationPresent(clazz)){
+                return clazz;
             }
         }
         return null;
